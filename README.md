@@ -5,7 +5,7 @@ This is python code for the paper work accepted in ACM MMSys'20. You can access 
 - Language: Python
 - Required Packages: numpy, pandas, matplotlib, scipy, sklearn
 - Need to install 'transform360' developed by 'facebook'
-- To install 'transform360', please visit this [link](https://https://github.com/facebook/transform360)):
+- To install 'transform360', please visit this [link](https://github.com/facebook/transform360)):
 - To install the required package, type the following command:
 
 1) Python 2
