@@ -43,3 +43,11 @@ Pyramid Decoding
 ```
 python3 pyramid_b_decoding.py
 ```
+Saliency to Json Files
+```
+python3 saliency_json.py
+```
+Saliency Stitching
+```
+python3 saliency_stitching.py
+```
