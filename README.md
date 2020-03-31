@@ -35,22 +35,11 @@ python3 gaze_deviation.py
 ```
 ![Interpolation](figure/pitch_5.png)
 
-3. Interpolation: make walk cycles consistent in length
+Pyramid Encoding
 ```
-python3 interpolation.py
+python3 pyramid_b_encoding.py
 ```
-![Interpolation](figure/)
-
-4. Cycle Filtering: filter out noisy cycles
+Pyramid Decoding
 ```
-python3 cycle_filter.py
+python3 pyramid_b_decoding.py
 ```
-![Cycle Filter](figure/)
-
-5. Classification: DNN (Multi Layer Perceptron), CNN, and RNN (LSTM)
-```
-python3 DNN.py
-python3 CNN.py
-python3 RNN.py
-```
-![Authentication](figure/)
