@@ -29,11 +29,11 @@ python3 eye_gaze_heatmap.py
 ```
 ![Data Filter](figure/eye_gaze_heatmap.png)
 
-2. Gait Cycle Detection: slice walk cycles from the data sequences
+ Plot Yaw & Pitch Deviation from Center of Front face
 ```
-python3 cycle_detection.py
+python3 gaze_deviation.py
 ```
-![Interpolation](figure/)
+![Interpolation](figure/pitch_5.png)
 
 3. Interpolation: make walk cycles consistent in length
 ```
