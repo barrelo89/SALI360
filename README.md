@@ -19,6 +19,8 @@ pip3 install numpy pandas matplotlib scipy sklearn
 ```
 
 ## Dataset
+We collected head and eye gaze movement dataset from 20 vonlunteers over 10 360-degree VR video.
+
 
 ### Running the code
 1. Data Filtering & Visualization of Frequency Distribution
