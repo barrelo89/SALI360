@@ -23,12 +23,11 @@ We collected head and eye gaze movement dataset from 20 vonlunteers over 10 360-
 
 
 ### Running the code
-1. Data Filtering & Visualization of Frequency Distribution
+Plot the eye gaze heat map
 ```
-python3 data_filter_fft.py
-python3 valid_start_end.py
+python3 eye_gaze_heatmap.py
 ```
-![Data Filter](figure/)
+![Data Filter](figure/eye_gaze_heatmap.png)
 
 2. Gait Cycle Detection: slice walk cycles from the data sequences
 ```
