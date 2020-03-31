@@ -18,7 +18,9 @@ pip install numpy pandas matplotlib scipy sklearn
 pip3 install numpy pandas matplotlib scipy sklearn
 ```
 
-## Running the code
+## Dataset
+
+### Running the code
 1. Data Filtering & Visualization of Frequency Distribution
 ```
 python3 data_filter_fft.py
