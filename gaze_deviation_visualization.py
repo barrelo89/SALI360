@@ -1,38 +1,18 @@
 import os
-import ast
-import math
 import pickle
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import sem
 
-def csv2pandas(csv_path):
-
-    data = pd.read_csv(csv_path, delimiter = ';')
-    data_columns = list(data.columns)
-
-    dictionarized_data = np.array([ast.literal_eval(line) for line in data[data_columns[0]] if not line in data_columns])
-    dictionary_keys = list(dictionarized_data[0].keys())
-
-    pandas_data = []
-
-    for one_dictionary in dictionarized_data:
-
-        line_data = []
-
-        for key in dictionary_keys:
-
-            line_data.append(one_dictionary[key])
-
-        pandas_data.append(line_data)
-
-    pandas_data = pd.DataFrame(pandas_data, columns = dictionary_keys)
-
-    return pandas_data
-
-#visaulize the gaze deviation pattern
+'''
+VISUALIZE YAW PITCH DEVIATION PATTERN
+'''
 base_path = 'data/angle_difference'
+figure_save_path = 'figure'
+if not os.path.exists(figure_save_path):
+    os.makedirs(figure_save_path)
+
+
 duration_units = [2, 5, 10]
 
 overall_pitch = []
@@ -113,7 +93,7 @@ for col_idx, duration in zip(range(col), duration_units):
     plt.xlim(0, 910)
     plt.ylim(0, 81)
     plt.tight_layout()
-    plt.savefig('yaw_' + str(duration) + '.png')
+    plt.savefig(os.path.join(figure_save_path. 'yaw_' + str(duration) + '.png'))
     plt.close()
 
     plt.scatter(range(1, len(input_pitch)+1), input_pitch, s = 4, c = 'b')#, label = 'mean'
@@ -129,7 +109,7 @@ for col_idx, duration in zip(range(col), duration_units):
     plt.xlim(0, 910)
     plt.ylim(0, 81)
     plt.tight_layout()
-    plt.savefig('pitch_' + str(duration) + '.png')
+    plt.savefig(os.path.join(figure_save_path, 'pitch_' + str(duration) + '.png'))
     plt.close()
 
 
