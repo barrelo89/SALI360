@@ -52,7 +52,7 @@ The pyramid representation would look as below.
 ![pyramid](figure/pyra_b.png)
 
 - Pyramid decoding in video
-1. The following command would convert pyramid representation back into cube represenation. however, even with the same sturcuture as cube format, decocded video would have reduced size and degraded quality, compared to the original cube map represenatation. 
+1. The following command would convert pyramid representation back into cube represenation. however, even with the same sturcuture as cube format, decocded video would have reduced size and degraded quality, compared to the original cube map represenatation. You can find the decoded video in 'video/segments/decoded'.
 ```
 python3 pyramid_b_decoding.py
 ```
