@@ -63,7 +63,8 @@ You can compare the quality of decoded video frame with the original cube frame 
 "Decoded Frame"
 ![decoded](figure/decoded.png)
 
-- Calculate saliency scores and save them in json files (in 'json' directory).
+- Calculate saliency scores
+The following command would calculate saliency score of video frames and save them in json files (in 'json' directory). To boost up the computation efficiency, we sampled every n-th (in our case 10th) frame for saliency score. 
 ```
 python3 saliency_json.py
 ```
@@ -73,6 +74,7 @@ The content of json file would look as below. Please refer to the paper for the 
 ...
 ```
 - Salient Region Concatenation
+
 The following command generates video files whose frames would look as below. sliced salient regions are concatenated to pyramid represenation.
 ```
 python3 salient_region_concatenation.py
