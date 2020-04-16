@@ -64,25 +64,25 @@ You can compare the quality of decoded video frame with the original cube frame 
 ![decoded](figure/decoded.png)
 
 - Calculate saliency scores
-The following command would calculate saliency score of video frames and save them in json files (in 'json' directory). To boost up the computation efficiency, we sampled every n-th (in our case 10th) frame for saliency score. 
 ```
 python3 saliency_json.py
 ```
+The command above would calculate saliency score of video frames and save them in json files (in 'json' directory). To boost up the computation efficiency, we sampled every n-th (in our case 10th) frame for saliency score. <br/>
+
 The content of json file would look as below. Please refer to the paper for the detailed explanation of json files.
 ```
 "{\"0\": {\"saliency\": \"1.0\", \"row\": \"274\", \"column\": \"767\", \"name\": \"L\", \"width\": \"256\"}, \"1\": {\"saliency\": \"0.9852603104565192\", \"row\": \"0\", \"column\": \"892\", \"name\": \"R\", \"width\": \"132\"}, \"2\": {\"saliency\": \"0.9852603104565192\", \"row\": \"0\", \"column\": \"0\", \"name\": \"B\", \"width\": \"124\"}, \"3\": {\"saliency\": \"0.8944914751693509\", \"row\": \"92\", \"column\": \"107\", \"name\": \"B\", \"width\": \"256\"}, \"4\": 
 ...
 ```
 - Salient Region Concatenation
-
-The following command generates video files whose frames would look as below. sliced salient regions are concatenated to pyramid represenation.
 ```
 python3 salient_region_concatenation.py
 ```
+The command above generates video files whose frames would look as below. sliced salient regions are concatenated to pyramid represenation.
 ![result](figure/result.png)
 
 
-Saliency Stitching
+- Saliency Stitching
 ```
 python3 saliency_stitching.py
 ```
