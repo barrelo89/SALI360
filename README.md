@@ -28,7 +28,7 @@ How to generate the eye gaze heat map
 ```
 python3 eye_gaze_heatmap.py
 ```
-The command above would generate the eye gaze heatmap figure in 'figure' directory, named 'eye_gaze_heatmap.png'. 
+The command above would generate the eye gaze heatmap figure shown below in 'figure' directory, named 'eye_gaze_heatmap.png'. 
 
 ![Data Filter](figure/eye_gaze_heatmap.png)
 
