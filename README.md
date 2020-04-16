@@ -57,10 +57,10 @@ The pyramid representation would look as below.
 python3 pyramid_b_decoding.py
 ```
 You can compare the quality of decoded video frame with the original cube frame by clicking the following images below. <br/>
-Original CUbe Frame
+"Original Cube Frame"
 ![original](figure/cube.png)
 
-Decoded Frame
+"Decoded Frame"
 ![decoded](figure/decoded.png)
 
 
