@@ -122,31 +122,55 @@ def pyramid_b_decoding(img):
 
     return output
 
-video_path = 'pyramid_b.mp4'
-capture = cv2.VideoCapture(video_path)
+video_path = 'video/segments/pyra_b'
+decoded_path = 'video/segments/decoded'
 
 fourcc = cv2.VideoWriter_fourcc(*'X264')
-fps = round(capture.get(cv2.CAP_PROP_FPS))
-frame_idx = 0
 
-while(capture.isOpened()):
+for y_p_combo in os.listdir(video_path):
 
-    retval, frame = capture.read()
-    if retval == True:
+    y_p_combo_path = os.path.join(video_path, y_p_combo)
+    y_p_write_path = os.path.join(decoded_path, y_p_combo)
 
-        pyramid_b_cube = pyramid_b_decoding(frame)
+    for duration in os.listdir(y_p_combo_path):
 
-        if frame_idx == 0:
-            frame_height, frame_width, _ = pyramid_b_cube.shape
-            writer = cv2.VideoWriter('pyramid_b_cube.mp4', fourcc, fps, (frame_width, frame_height))
+        duration_path = os.path.join(y_p_combo_path, duration)
+        duration_write_path = os.path.join(y_p_write_path, duration)
 
-        writer.write(pyramid_b_cube)
-        frame_idx += 1
-    else:
-        break
+        if not os.path.exists(duration_write_path):
+            os.makedirs(duration_write_path)
 
-capture.release()
-writer.release()
+        for file_name in os.listdir(duration_path):
+
+            file_path = os.path.join(duration_path, file_name)
+            file_write_path = os.path.join(duration_write_path, file_name)
+
+            capture = cv2.VideoCapture(file_path)
+            fps = round(capture.get(cv2.CAP_PROP_FPS))
+            frame_idx = 0
+
+            while(capture.isOpened()):
+
+                retval, frame = capture.read()
+                if retval == True:
+
+                    pyramid_b_cube = pyramid_b_decoding(frame)
+
+                    if frame_idx == 0:
+                        frame_height, frame_width, _ = pyramid_b_cube.shape
+                        writer = cv2.VideoWriter(file_write_path, fourcc, fps, (frame_width, frame_height))
+
+                    writer.write(pyramid_b_cube)
+                    frame_idx += 1
+                else:
+                    break
+
+            capture.release()
+            writer.release()
+
+
+
+
 
 
 
