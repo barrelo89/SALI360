@@ -3,7 +3,7 @@ This is python code for the paper work accepted in ACM MMSys'20. You can access 
 
 ## Prerequisities
 - Language: Python
-- Required Packages: numpy, pandas, matplotlib, scipy, sklearn, and opencv
+- Required Packages: numpy, pandas, matplotlib, scipy, sklearn, scikit-image and opencv
 - Need to install 'OpenCV' [link](https://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/)
 - Need to install 'transform360' developed by 'facebook' [link](https://github.com/facebook/transform360)
 - The following link would be helpful for installation [link](https://github.com/facebook/transform360/issues/56)
@@ -12,11 +12,11 @@ This is python code for the paper work accepted in ACM MMSys'20. You can access 
 
 1) Python 2
 ```
-pip install numpy pandas matplotlib scipy sklearn
+pip install numpy pandas matplotlib scipy sklearn scikit-image
 ```
 2) Python 3
 ```
-pip3 install numpy pandas matplotlib scipy sklearn
+pip3 install numpy pandas matplotlib scipy sklearn scikit-image
 ```
 
 ## Dataset
