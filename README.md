@@ -32,10 +32,13 @@ The command above would generate the eye gaze heatmap figure shown below in 'fig
 
 ![Data Filter](figure/eye_gaze_heatmap.png)
 
- Plot Yaw & Pitch Deviation from Center of Front face
+- How to plot yaw & pitch deviation from center of front face 
 ```
 python3 gaze_deviation.py
+python3 gaze_deviation_visualization.py
 ```
+The first command 'python3 gaze_deviation.py' calculates the yaw and pitch deviation from the center of front face in cube map representation, which would be saved in a format of 'pickle' file to be used in the following script. 'gaze_deviation_visualization.py' would save the deviation plots, each of which would be named 'type_of_data'_'duration'.png (e.g., pitch_2.png) in the 'figure' directory. The figure below is 'pitch_5.png that shows the deviation pattern when 5-second-of video segments are streamed. 
+
 ![Interpolation](figure/pitch_5.png)
 
 Pyramid Encoding
