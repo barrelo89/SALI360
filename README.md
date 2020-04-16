@@ -24,10 +24,12 @@ We collected head and eye gaze movement dataset from 20 vonlunteers over 10 360-
 
 
 ### Running the code
-Plot the eye gaze heat map
+How to generate the eye gaze heat map
 ```
 python3 eye_gaze_heatmap.py
 ```
+The command above would generate the eye gaze heatmap figure in 'figure' directory, named 'eye_gaze_heatmap.png'. 
+
 ![Data Filter](figure/eye_gaze_heatmap.png)
 
  Plot Yaw & Pitch Deviation from Center of Front face
