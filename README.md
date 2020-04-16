@@ -67,15 +67,18 @@ You can compare the quality of decoded video frame with the original cube frame 
 ```
 python3 saliency_json.py
 ```
-The content of json file would look as below.
+The content of json file would look as below. Please refer to the paper for the detailed explanation of json files.
 ```
 "{\"0\": {\"saliency\": \"1.0\", \"row\": \"274\", \"column\": \"767\", \"name\": \"L\", \"width\": \"256\"}, \"1\": {\"saliency\": \"0.9852603104565192\", \"row\": \"0\", \"column\": \"892\", \"name\": \"R\", \"width\": \"132\"}, \"2\": {\"saliency\": \"0.9852603104565192\", \"row\": \"0\", \"column\": \"0\", \"name\": \"B\", \"width\": \"124\"}, \"3\": {\"saliency\": \"0.8944914751693509\", \"row\": \"92\", \"column\": \"107\", \"name\": \"B\", \"width\": \"256\"}, \"4\": 
 ...
 ```
 - Salient Region Concatenation
+The following command generates video files whose frames would look as below. sliced salient regions are concatenated to pyramid represenation.
 ```
 python3 salient_region_concatenation.py
 ```
+![result](figure/result.png)
+
 
 Saliency Stitching
 ```
