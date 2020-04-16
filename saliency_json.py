@@ -1,9 +1,9 @@
-from saliency_union import *
-from saliency_extraction import *
+import os
 import cv2
 import json
 import multiprocessing
-import os
+from saliency_union import *
+from saliency_extraction import *
 
 '''
 cube frame structure:
@@ -107,8 +107,8 @@ def encoding_process(video_path, write_path, num_core_2_use, json_frame_ratio, r
 
     cap.release()
 
-base_path = 'video/full/cube'
-write_base_path = 'video/sali/json/full'
+base_path = 'video/segments/cube'
+write_base_path = 'json'
 
 if not os.path.exists(write_base_path):
     os.makedirs(write_base_path)
@@ -118,26 +118,24 @@ json_frame_ratio = 10
 salient_patch_size = 4
 resize_ratio = 4
 
-for y_p_video in os.listdir(base_path):
+for y_p_combo in os.listdir(base_path):
 
-    video_path = os.path.join(base_path, y_p_video)
-    write_path = os.path.join(write_base_path, os.path.splitext(y_p_video)[0])
+    y_p_combo_path = os.path.join(base_path, y_p_combo)
+    y_p_write_path = os.path.join(write_base_path, y_p_combo)
 
-    encoding_process(video_path, write_path, num_core_2_use, json_frame_ratio, resize_ratio, salient_patch_size)
+    for duration in os.listdir(y_p_combo_path):
 
+        duration_path = os.path.join(y_p_combo_path, duration)
+        duration_write_path = os.path.join(y_p_write_path, duration)
 
+        if not os.path.exists(duration_write_path):
+            os.makedirs(duration_write_path)
 
+        for y_p_video in os.listdir(duration_path):
 
-
-
-
-
-
-
-
-
-
-
+            video_path = os.path.join(duration_path, y_p_video)
+            write_path = os.path.join(duration_write_path, os.path.splitext(y_p_video)[0])
+            encoding_process(video_path, write_path, num_core_2_use, json_frame_ratio, resize_ratio, salient_patch_size)
 
 
 
