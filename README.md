@@ -20,7 +20,7 @@ pip3 install numpy pandas matplotlib scipy sklearn scikit-image
 ```
 
 ## Dataset
-We collected head and eye gaze movement dataset from 20 vonlunteers over 10 360-degree VR video.
+We collected head and eye gaze movement dataset from 20 vonlunteers over 10 360-degree VR video. Due to the restriction on file size available to upload onto Github, we will open a linke to the external link to our dataset.
 
 
 ### Running the code
