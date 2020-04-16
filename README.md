@@ -51,8 +51,9 @@ python3 pyramid_b_encoding.py
 The pyramid representation would look like the following figure.
 ![pyramid](figure/pyra_b.png)
 
-Pyramid Decoding
+- Pyramid decoding in video
 ```
+1. The following command would convert pyramid representation back into cube represenation. however, even with the same sturcuture as cube format, decocded video would have reduced size and degraded quality. 
 python3 pyramid_b_decoding.py
 ```
 Saliency to Json Files
