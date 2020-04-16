@@ -27,7 +27,7 @@ def gaze_position_split(gaze_position):
 
     return x_coord_array, y_coord_array
 
-def plot_heatmap(x_data, y_data, bins = 100, sigma = 10):
+def plot_heatmap(x_data, y_data, bins, sigma, figure_save_path):
 
     heatmap, xedges, yedges = np.histogram2d(x_data, y_data, bins = bins)
     heatmap = gaussian_filter(heatmap / heatmap.sum(), sigma = sigma)
@@ -40,10 +40,14 @@ def plot_heatmap(x_data, y_data, bins = 100, sigma = 10):
     plt.xticks(np.arange(0, 101, 20), np.linspace(-40, 40, 6, dtype = np.int32), fontsize = 15)
     plt.yticks(np.arange(0, 101, 20), np.linspace(40, -40, 6, dtype = np.int32), fontsize = 15)
     plt.tight_layout()
-    plt.show()
+    plt.savefig(os.path.join(figure_save_path, 'eye_gaze_heatmap.png'))
 
 csv_base_path = 'csv'
+figure_save_path = 'figure'
+if not os.path.exists(figure_save_path):
+    os.makedirs(figure_save_path)
 
+print("PROCESSING")
 x_list = []
 y_list = []
 
@@ -70,7 +74,8 @@ for csv_idx in range(10):
 x_list = np.concatenate(x_list)
 y_list = np.concatenate(y_list)
 
-plot_heatmap(x_list, y_list, bins = 100, sigma = 4)
+plot_heatmap(x_list, y_list, 100, 4, figure_save_path)
+print("HEATMAP GENERATED! PLEASE CHECK FIGURE DIRECTORY!")
 
 
 
