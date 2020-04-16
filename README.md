@@ -24,7 +24,7 @@ We collected head and eye gaze movement dataset from 20 vonlunteers over 10 360-
 
 
 ### Running the code
-How to generate the eye gaze heat map
+- How to generate the eye gaze heat map
 ```
 python3 eye_gaze_heatmap.py
 ```
