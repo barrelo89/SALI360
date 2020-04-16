@@ -6,6 +6,7 @@ This is python code for the paper work accepted in ACM MMSys'20. You can access 
 - Required Packages: numpy, pandas, matplotlib, scipy, sklearn, and opencv
 - Need to install 'OpenCV' [link](https://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/)
 - Need to install 'transform360' developed by 'facebook' [link](https://github.com/facebook/transform360))
+- The following link would be helpful for installation [link](https://github.com/facebook/transform360/issues/56)
 - Need to install 'FFMPEG' [link](https://www.ffmpeg.org/download.html)
 - To install the required package, type the following command:
 
