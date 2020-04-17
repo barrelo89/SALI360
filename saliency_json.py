@@ -1,3 +1,28 @@
+
+'''
+MIT License
+
+Copyright (c) [2020] [Duin BAEK]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+'''
+
 import os
 import cv2
 import json
@@ -134,8 +159,7 @@ for y_p_combo in os.listdir(base_path):
         for y_p_video in os.listdir(duration_path):
 
             video_path = os.path.join(duration_path, y_p_video)
-            write_path = os.path.join(duration_write_path, os.path.splitext(y_p_video)[0])
-            encoding_process(video_path, write_path, num_core_2_use, json_frame_ratio, resize_ratio, salient_patch_size)
+            encoding_process(video_path, duration_write_path, num_core_2_use, json_frame_ratio, resize_ratio, salient_patch_size)
 
 
 

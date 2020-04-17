@@ -25,7 +25,9 @@ SOFTWARE.
 import os
 import cv2
 import numpy as np
+import pandas as pd
 import multiprocessing
+from saliency_update import *
 
 def rotate_img(img, iteration = 1):
     #0: remain same, +n: rotate left in 90*n degree, -n: rotate right in 90*n degree (some part of img is sliced off)
@@ -122,7 +124,7 @@ def trapezoid_2(img): # starting from small frame / 2
 
     return empty_pallete #shape of row, col, channel (1024, 1024, 3)
 
-def pyramid_b_encoding(img, output):
+def pyramid_b_encoding(img):
 
     #[right_frame, left_frame, up_frame, down_frame, front_frame, back_frame]
     split_img = frame_split(img)
@@ -173,41 +175,142 @@ def pyramid_b_encoding(img, output):
 
     pyra_c_frame = np.concatenate([front_img, pallete], axis = 1)
 
-    output.put(pyra_c_frame)
+    return pyra_c_frame
+
+def frame_split_1(frame):
+    #return a list of screens in an order of right, left, up, down, front and back
+    if len(frame.shape) == 3:
+        height, width, _ = frame.shape
+    else:
+        height, width = frame.shape
+
+    unit_height = int(height / 2)
+    unit_width = int(width / 3)
+
+    #1st layer
+    right_frame = frame[:unit_height, :unit_width]
+    left_frame = frame[:unit_height, unit_width:2*unit_width]
+    up_frame = frame[:unit_height, 2*unit_width:]
+    #2nd layer
+    down_frame = frame[unit_height:, :unit_width]
+    front_frame = frame[unit_height:, unit_width:2*unit_width]
+    back_frame = frame[unit_height:, 2*unit_width:]
+
+    return [right_frame, left_frame, up_frame, down_frame, front_frame, back_frame]
+
+def json_sort_by_name(y_p_combo_path):
+    json_file_list = np.array(os.listdir(y_p_combo_path))
+    idx_list = [int(json_file.split('.')[0].split('_')[-1]) for json_file in json_file_list]
+    sorted_idx_list = np.argsort(idx_list)
+    sorted_json_file_list = json_file_list[sorted_idx_list]
+
+    return sorted_json_file_list
+
+def json_path_generate(path, j2f_ratio):
+
+    json_path_list = []
+
+    sorted_json_file_list = json_sort_by_name(path)
+
+    for json_file in sorted_json_file_list:
+        for _ in range(j2f_ratio):
+            json_path_list.append(os.path.join(path, json_file))
+
+    return np.array(json_path_list).ravel()
+
+def saliency_patching(cube_frame, json_path, frame_idx, fps, duration_unit, salient_patch_size, num_col):
+
+    frame_height, frame_width, _ = cube_frame.shape
+    side_length = int(frame_width / 3)
+    window_size = int(side_length / salient_patch_size) #in the paper, salient_region_rate is set to 4
+
+    name2idx = np.array(['R', 'L', 'U', 'D', 'F', 'B'])
+
+    split_img = frame_split_1(cube_frame) #[right_frame, left_frame, up_frame, down_frame, front_frame, back_frame]
+
+    json_data = saliency_score_update(json_path, frame_idx, fps, duration_unit)
+    json_keys = np.array(list(json_data.keys()))
+
+    sorted_json_idx = np.argsort([int(key) for key in json_keys])
+    json_keys = json_keys[sorted_json_idx]
+
+    img_cluster =[]
+    layer_img = []
+    threshold = 0
+    #newly added
+    num_row = 0
+    '''#should change tar_row to change the number of salient patches to be used.'''
+    tar_row = salient_patch_size
+
+    for key in json_keys:
+        img = split_img[np.where(name2idx == json_data[key]['name'])[0][0]][int(json_data[key]['row']): int(json_data[key]['row']) + window_size, int(json_data[key]['column']): int(json_data[key]['column']) + int(json_data[key]['width'])]
+
+        layer_img.append(img)
+        threshold += int(json_data[key]['width'])
+        #print(threshold)
+
+        if threshold == num_col*window_size:
+            img_cluster.append(np.concatenate(layer_img, axis = 1))
+            threshold = 0
+            layer_img = []
+            num_row += 1
+
+        #print(num_row)
+        if num_row == tar_row:
+            break
+
+    out_img = np.concatenate(img_cluster, axis = 0)
+    return out_img
+
+def encode(cube_frame, json_path, frame_idx, fps, duration_unit, salient_patch_size, num_col, output):
+
+    pyra = pyramid_b_encoding(cube_frame)
+    sali = saliency_patching(cube_frame, json_path, frame_idx, fps, duration_unit, salient_patch_size, num_col)
+
+    result = np.concatenate([pyra, sali], axis = 1)
+    return output.put(result)
+
+num_col = 2
+j2f_ratio = 10
+salient_patch_size = 4
 
 cube_base_path = 'video/segments/cube'
-pyra_base_path = 'video/segments/pyra'
+json_base_path = 'json'
+write_base_path = 'video/segments/sali_encoded'
 
 fourcc = cv2.VideoWriter_fourcc(*'X264')
 
 for y_p_combo in os.listdir(cube_base_path):
 
     y_p_combo_path = os.path.join(cube_base_path, y_p_combo)
-    y_p_write_path = os.path.join(pyra_base_path, y_p_combo)
+    y_p_json_path = os.path.join(json_base_path, y_p_combo)
+    y_p_result_path = os.path.join(write_base_path, y_p_combo)
+
 
     for duration in os.listdir(y_p_combo_path):
 
         duration_path = os.path.join(y_p_combo_path, duration)
-        duration_write_path = os.path.join(y_p_write_path, duration)
-
-        if not os.path.exists(duration_write_path):
-            os.makedirs(duration_write_path)
+        duration_json_path = os.path.join(y_p_json_path, duration)
+        duration_result_path = os.path.join(y_p_result_path, duration)
+        if not os.path.exists(duration_result_path):
+            os.makedirs(duration_result_path)
 
         for file_name in os.listdir(duration_path):
 
             file_path = os.path.join(duration_path, file_name)
-            file_write_path = os.path.join(duration_write_path, file_name)
+            result_path = os.path.join(duration_result_path, file_name)
+            json_path = json_path_generate(duration_json_path, j2f_ratio)
 
             capture = cv2.VideoCapture(file_path)
 
             fps = round(capture.get(cv2.CAP_PROP_FPS))
             frame_input_list = []
             frame_idx_list = []
-
+            json_path_list = []
             outputs = []
             process = []
 
-            num_core_2_use = multiprocessing.cpu_count() - 2
+            num_core_2_use = 6#multiprocessing.cpu_count() - 2
 
             frame_idx = 0
 
@@ -219,6 +322,7 @@ for y_p_combo in os.listdir(cube_base_path):
 
                     frame_input_list.append(frame)
                     frame_idx_list.append(frame_idx)
+                    json_path_list.append(json_path[frame_idx])
 
                     if len(frame_input_list) == num_core_2_use:
 
@@ -226,19 +330,19 @@ for y_p_combo in os.listdir(cube_base_path):
                             outputs.append(multiprocessing.Queue())
 
                         for order in range(num_core_2_use):
-                            process.append(multiprocessing.Process(target = pyramid_b_encoding, args = (frame_input_list[order], outputs[order])))
+                            process.append(multiprocessing.Process(target = encode, args = (frame_input_list[order], json_path_list[order], frame_idx_list[order], fps, duration, salient_patch_size, num_col, outputs[order])))
 
                         for idx, pro in enumerate(process):
                             pro.start()
 
                         for idx in range(num_core_2_use):
-                            pyra_b_frame = outputs[idx].get()
+                            result = outputs[idx].get()
 
                             if frame_idx_list[idx] == 0:
-                                frame_height, frame_width, _ = pyra_b_frame.shape
-                                writer = cv2.VideoWriter(file_write_path, fourcc, fps, (frame_width, frame_height))
+                                frame_height, frame_width, _ = result.shape
+                                writer = cv2.VideoWriter(result_path, fourcc, fps, (frame_width, frame_height))
 
-                            writer.write(pyra_b_frame)
+                            writer.write(result)
 
                         for idx in range(num_core_2_use):
                             outputs[idx].close()
@@ -257,45 +361,6 @@ for y_p_combo in os.listdir(cube_base_path):
 
             capture.release()
             writer.release()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
