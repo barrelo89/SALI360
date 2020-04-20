@@ -44,7 +44,7 @@ python3 gaze_deviation_visualization.py
 
 - Pyramid encoding in video
 1. Extract 'video.zip' file to recover the sample video segment.
-2. Run the following command. pyramid-encoded video segment would be found in 'video/segemtns/pyramid_b'. 
+2. Run the following command. pyramid-encoded video segment would be found in 'video/segments/pyramid_b'. 
 ```
 python3 pyramid_b_encoding.py
 ```
