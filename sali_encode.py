@@ -262,13 +262,13 @@ def saliency_patching(cube_frame, json_path, frame_idx, fps, duration_unit, sali
     out_img = np.concatenate(img_cluster, axis = 0)
     return out_img
 
-def encode(cube_frame, json_path, frame_idx, fps, duration_unit, salient_patch_size, num_col, output):
+def encode(cube_frame, json_path, frame_idx, fps, duration_unit, salient_patch_size, num_col):
 
     pyra = pyramid_b_encoding(cube_frame)
     sali = saliency_patching(cube_frame, json_path, frame_idx, fps, duration_unit, salient_patch_size, num_col)
 
     result = np.concatenate([pyra, sali], axis = 1)
-    return output.put(result)
+    return result
 
 num_col = 2
 j2f_ratio = 10
@@ -295,7 +295,7 @@ for y_p_combo in os.listdir(cube_base_path):
         if not os.path.exists(duration_result_path):
             os.makedirs(duration_result_path)
 
-        for file_name in os.listdir(duration_path):
+        for file_name in sorted(os.listdir(duration_path)):
 
             file_path = os.path.join(duration_path, file_name)
             result_path = os.path.join(duration_result_path, file_name)
@@ -304,14 +304,6 @@ for y_p_combo in os.listdir(cube_base_path):
             capture = cv2.VideoCapture(file_path)
 
             fps = round(capture.get(cv2.CAP_PROP_FPS))
-            frame_input_list = []
-            frame_idx_list = []
-            json_path_list = []
-            outputs = []
-            process = []
-
-            num_core_2_use = 6#multiprocessing.cpu_count() - 2
-
             frame_idx = 0
 
             while(capture.isOpened()):
@@ -320,40 +312,13 @@ for y_p_combo in os.listdir(cube_base_path):
 
                 if retval == True:
 
-                    frame_input_list.append(frame)
-                    frame_idx_list.append(frame_idx)
-                    json_path_list.append(json_path[frame_idx])
+                    encoded = encode(frame, json_path[frame_idx], frame_idx, fps, duration, salient_patch_size, num_col)
 
-                    if len(frame_input_list) == num_core_2_use:
+                    if frame_idx == 0:
+                        frame_height, frame_width, _ = encoded.shape
+                        writer = cv2.VideoWriter(result_path, fourcc, fps, (frame_width, frame_height))
 
-                        for _ in range(num_core_2_use):
-                            outputs.append(multiprocessing.Queue())
-
-                        for order in range(num_core_2_use):
-                            process.append(multiprocessing.Process(target = encode, args = (frame_input_list[order], json_path_list[order], frame_idx_list[order], fps, duration, salient_patch_size, num_col, outputs[order])))
-
-                        for idx, pro in enumerate(process):
-                            pro.start()
-
-                        for idx in range(num_core_2_use):
-                            result = outputs[idx].get()
-
-                            if frame_idx_list[idx] == 0:
-                                frame_height, frame_width, _ = result.shape
-                                writer = cv2.VideoWriter(result_path, fourcc, fps, (frame_width, frame_height))
-
-                            writer.write(result)
-
-                        for idx in range(num_core_2_use):
-                            outputs[idx].close()
-
-                        for idx, pro in enumerate(process):
-                            pro.terminate()
-
-                        outputs = []
-                        process = []
-                        frame_input_list = []
-                        frame_idx_list = []
+                    writer.write(encoded)
 
                     frame_idx += 1
                 else:

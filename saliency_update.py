@@ -155,6 +155,7 @@ def saliency_score_update(json_path, frame_idx, fps, duration_unit):
 
     for json_key, updated_json_value in zip(json_keys, updated_json_values):
         #print(json_key, updated_json_value['name'], updated_json_value['width'], updated_json_value['column'])
+        #print(frame_idx, json_key, updated_json_value)
         updated_json_data[json_key] = updated_json_value
     return updated_json_data
 
