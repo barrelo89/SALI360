@@ -44,8 +44,7 @@ python3 gaze_deviation_visualization.py
 ![Interpolation](figure/pitch_5.png)
 
 - Pyramid encoding in video
-1. Extract 'video.zip' file to recover the sample video segment.
-2. Run the following command. pyramid-encoded video segment would be found in 'video/segments/pyramid_b'. 
+Run the following command. pyramid-encoded video segment would be found in 'video/segments/pyramid_b'. 
 ```
 python3 pyramid_b_encoding.py
 ```
@@ -53,7 +52,7 @@ The pyramid representation would look as below.
 ![pyramid](figure/pyra_b.png)
 
 - Pyramid decoding in video
-1. The following command would convert pyramid representation back into cube represenation. however, even with the same sturcuture as cube format, decocded video would have reduced size and degraded quality, compared to the original cube map represenatation. You can find the decoded video in 'video/segments/decoded'.
+The following command would convert pyramid representation back into cube represenation. however, even with the same sturcuture as cube format, decocded video would have reduced size and degraded quality, compared to the original cube map represenatation. You can find the decoded video in 'video/segments/decoded'.
 ```
 python3 pyramid_b_decoding.py
 ```
