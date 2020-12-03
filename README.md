@@ -1,5 +1,5 @@
 # SALI360
-This is python code for the paper work accepted in ACM MMSys'20. You can access to the paper through this link.
+This is python code for the paper work accepted in ACM MMSys'20. You can access to the paper through this [link](https://dl.acm.org/doi/abs/10.1145/3339825.3391866).
 
 ## Prerequisities
 - Language: Python
